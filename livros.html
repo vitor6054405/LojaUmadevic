@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UMADEVIC STORE</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topo">
+  <div class="container header-flex">
+    <div class="logo"><a href="index.html"><img alt="UMADEVIC" loading="lazy" width="120" height="60" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ID%20%20Logo%20UMADEVIC-aruevDJnjyqC91LBtB9EcqtFWsHLg7.png"></a></div>
+
+     <nav class="menu">
+      <a href="index.html">Home</a>
+      <a href="maisvendidos.html">Mais vendidos</a>
+      <a href="camisetas.html">Camisetas</a>
+      <a href="acessorios.html">Acessórios</a>
+    </nav>
+
+      <div class="cart-button" id="open-cart">
+        <span class="user-icon" onclick="abrirChat()"><img loading="lazy" width="40" height="40" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="imagens/lupa.png"></span>
+        <span class="user-icon" onclick="abrirUsuario()"><img loading="lazy" width="40" height="40" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="imagens/contato.png"></span>
+        <a href="carrinho.html" class="cart-icon">
+       <img loading="lazy" width="40" height="40" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="imagens/carrinho.png">
+      </a>
+      </div>
+  </div>
+</header>
+
+  
+
+</section>
+
+   <section id="produtos" class="products-section">
+
+  <div class="container">
+
+    <div class="padding_border_line_cort">
+      <h4 class="titulo"></h4>
+    </div>
+
+    <div class="products-grid">
+
+      
+      <!-- PRODUTO -->
+     
+
+    
+
+      <div class="product-card">
+        <div class="product-image">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ID%20%20Logo%20UMADEVIC-aruevDJnjyqC91LBtB9EcqtFWsHLg7.png">
+        </div>
+
+        <div class="product-info">
+          <h3 class="product-name"><h1>Em Breve Novidades🤩</h1></h3>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- MODAL USUÁRIO -->
+<div id="userModal" class="modal-user">
+
+  <div class="modal-content-user">
+
+    <span class="close-user" onclick="fecharUsuario()">&times;</span>
+
+    <div id="areaCadastro">
+
+      <h2>Criar Conta</h2>
+
+      <form id="formCadastro">
+
+        <input type="text" id="nome" placeholder="Seu nome" required>
+        <input type="email" id="email" placeholder="Seu e-mail" required>
+        <input type="text" id="telefone" placeholder="Telefone" required>
+        <input type="password" id="senha" placeholder="Senha" required>
+
+        <button type="submit">Cadastrar</button>
+
+      </form>
+
+    </div>
+
+    <div id="areaUsuario" style="display:none;">
+
+      <h2>Minha Conta</h2>
+
+      <p><strong>Nome:</strong> <span id="userNome"></span></p>
+      <p><strong>Email:</strong> <span id="userEmail"></span></p>
+      <p><strong>Telefone:</strong> <span id="userTelefone"></span></p>
+
+      <button onclick="logoutUsuario()" class="btn-logout">Sair</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<a href="https://wa.me/5591985240058?text=Olá,%20vim%20pelo%20site%20e%20quero%20mais%20informações!"
+   class="whatsapp-float"
+   target="_blank">
+   <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+</a>
+
+<div id="chatBox" class="chat-box">
+  <div class="chat-header">
+    <span>Buscar Produto</span>
+    <button onclick="fecharChat()">✖</button>
+  </div>
+
+  <div class="chat-body">
+    <input type="text" id="buscaInput" placeholder="Digite o que você procura..." />
+    <button onclick="irParaBusca()">Pesquisar</button>
+  </div>
+</div>
+
+<script>
+
+function abrirChat(){
+  document.getElementById("chatBox").style.display = "flex";
+}
+
+function fecharChat(){
+  document.getElementById("chatBox").style.display = "none";
+}
+
+function irParaBusca(){
+  let valor = document.getElementById("buscaInput").value;
+  if(valor.trim() !== ""){
+    window.location.href = "resultado.html?busca=" + encodeURIComponent(valor);
+  }
+}
+
+</script>
+
+<script>
+
+function abrirUsuario() {
+  document.getElementById("userModal").style.display = "flex";
+  verificarUsuario();
+}
+
+function fecharUsuario() {
+  document.getElementById("userModal").style.display = "none";
+}
+
+function verificarUsuario() {
+
+  let usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  if(usuario) {
+
+    document.getElementById("areaCadastro").style.display = "none";
+    document.getElementById("areaUsuario").style.display = "block";
+
+    document.getElementById("userNome").innerText = usuario.nome;
+    document.getElementById("userEmail").innerText = usuario.email;
+    document.getElementById("userTelefone").innerText = usuario.telefone;
+
+  } else {
+
+    document.getElementById("areaCadastro").style.display = "block";
+    document.getElementById("areaUsuario").style.display = "none";
+
+  }
+}
+
+document.getElementById("formCadastro").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  let usuario = {
+    nome: document.getElementById("nome").value,
+    email: document.getElementById("email").value,
+    telefone: document.getElementById("telefone").value,
+    senha: document.getElementById("senha").value
+  };
+
+  localStorage.setItem("usuario", JSON.stringify(usuario));
+
+  alert("Cadastro realizado com sucesso!");
+  verificarUsuario();
+});
+
+function logoutUsuario() {
+  localStorage.removeItem("usuario");
+  verificarUsuario();
+}
+
+</script>
+
+ <footer class="footer-premium">
+
+  <!-- SOBRE A LOJA -->
+  <div class="footer-top">
+    <div class="container">
+
+      <div class="footer-col sobre">
+        <h3>Sobre Nós</h3>
+        <p>
+          Somos uma marca cristã jovem, criada para expressar fé através da moda.
+          Estilo, propósito e identidade em cada peça.
+        </p>
+      </div>
+
+      <div class="footer-col links">
+        <h3>Institucional</h3>
+        <ul>
+          <li><a href="#">Sobre a Loja</a></li>
+          <li><a href="#">Política de Troca</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Contato</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col atendimento">
+        <h3>Atendimento</h3>
+        <ul>
+          <li>📞 (91) 98524-0058</li>
+          <li>✉ lojaumadevic@gmail.com</li>
+          <li>🕒 Seg a Sex - 9h às 18h</li>
+        </ul>
+      </div>
+
+      <div class="footer-col newsletter">
+        <h3>Receba Novidades</h3>
+        <form id="newsletterForm">
+          <input type="email" placeholder="Seu melhor e-mail" required>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- REDES + PAGAMENTO -->
+  <div class="footer-middle">
+    <div class="container middle-flex">
+
+      <div class="redes">
+        <span>Siga-nos</span>
+        <div class="selos">
+          <a href="https://www.instagram.com/_umadevic/"><i class="fab fa-instagram"></i><img src="imagens/transferir.png"></a>
+          <a href="#"><i class="fab fa-whatsapp"></i><img src="imagens/tiw.png"></a>
+          <a href="https://www.facebook.com/Umadevic/?locale=pt_BR"><i class="fab fa-youtube"></i><img src="imagens/face.png"></a>
+        </div>
+      </div>
+
+      <div class="pagamentos">
+        <span>Formas de Pagamento</span>
+        <div class="selos">
+          <img src="https://cdn.awsli.com.br/28/28812/arquivos/mp_cmyk_handshake_color_horizontal.png" alt="Mercado Pago">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COPYRIGHT -->
+  <div class="footer-bottom">
+    <p>© 2026 Loja Umadevic - Todos os direitos reservados</p>
+    <p>Feito por LizardTech</p>
+  </div>
+
+</footer>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+const swiper = new Swiper(".mySwiper", {
+  loop: true,
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
+</script>
+
+
+  <script src="app.js"></script>
+  <script>
+document.getElementById("newsletterForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  alert("Obrigado por se cadastrar!");
+  this.reset();
+});
+</script>
+</body>
+</html>
