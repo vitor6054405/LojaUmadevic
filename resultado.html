@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resultados da Busca - UMADEVIC</title>
+<link rel="stylesheet" href="styles.css">
+
+<style>
+
+/* ===== LAYOUT BASE ===== */
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+}
+
+.resultado-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.resultado-titulo {
+  font-size: 32px;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.resultado-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+}
+
+/* ===== LISTA DE PRODUTOS ===== */
+
+.item-produto {
+  display: flex;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.item-produto:hover {
+  transform: translateY(-3px);
+}
+
+.item-produto img {
+  width: 120px;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.item-info h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.item-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+/* ===== LATERAL ===== */
+
+.resumo-busca {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  height: fit-content;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.resumo-busca h2 {
+  margin-top: 0;
+}
+
+.nao-encontrado {
+  font-size: 22px;
+  color: gray;
+  margin-top: 40px;
+}
+
+@media(max-width: 900px){
+  .resultado-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER IGUAL AO SEU -->
+<header class="topo">
+  <div class="container header-flex">
+    <div class="logo"><a href="index.html"><img alt="UMADEVIC" loading="lazy" width="120" height="60" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ID%20%20Logo%20UMADEVIC-aruevDJnjyqC91LBtB9EcqtFWsHLg7.png"></a></div>
+
+     <nav class="menu">
+      <a href="camisetas.html">Camisetas</a>
+      <a href="maisvendidos.html">Mais vendidos</a>
+      <a href="livros.html">Livros</a>
+      <a href="acessorios.html">Acessórios</a>
+    </nav>
+
+<div class="cart-button" id="open-cart">
+        <span class="user-icon" onclick="abrirChat()"><img loading="lazy" width="40" height="40" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="imagens/lupa.png"></span>
+        <span class="user-icon" onclick="abrirUsuario()"><img loading="lazy" width="40" height="40" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="imagens/contato.png"></span>
+        <a href="carrinho.html" class="cart-icon">
+       <img loading="lazy" width="40" height="40" decoding="async" data-nimg="1" class="w-24 sm:w-32 h-auto" style="color:transparent" src="imagens/carrinho.png">
+      </a>
+      </div>
+  </div>
+</header>
+
+<div class="resultado-container">
+
+  <h1 class="resultado-titulo">Resultados da Busca</h1>
+
+  <div class="resultado-grid">
+
+    <!-- LISTA -->
+    <div id="lista-produtos"></div>
+
+    <!-- LATERAL -->
+    <div class="resumo-busca">
+      <h2>Resumo</h2>
+      <p id="termo-busca"></p>
+      <p id="quantidade"></p>
+    </div>
+
+  </div>
+
+</div>
+
+<a href="https://wa.me/5591985240058?text=Olá,%20vim%20pelo%20site%20e%20quero%20mais%20informações!"
+   class="whatsapp-float"
+   target="_blank">
+   <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+</a>
+
+<script>
+
+// BANCO DE PRODUTOS
+const produtos = [
+  {
+    id: 1,
+    nome: "Boné Conexão Jovem",
+    preco: "R$ 45,00",
+    imagem: "imagens/modelobone.png"
+  },
+  {
+    id: 2,
+    nome: "Garrafa Conexão Jovem",
+    preco: "R$ 40,00",
+    imagem: "imagens/garrafapreta.png"
+  },
+  {
+    id: 3,
+    nome: "Caneca Conexão Jovem",
+    preco: "R$ 30,00",
+    imagem: "imagens/canecapreta.png"
+  },
+   {
+    id: 4,
+    nome: "Camiseta Conexão Black",
+    preco: "R$ 50,00",
+    imagem: "imagens/WhatsApp Image 2026-02-26 at 07.42.20 (1).jpeg"
+   },
+   {
+    id: 5,
+    nome: "Camiseta Conexão Cinza",
+    preco: "R$ 50,00",
+    imagem: "imagens/WhatsApp Image 2026-02-26 at 07.42.20.jpeg"
+   },
+   {
+    id: 6,
+    nome: "Ecobag Conexão Jovem",
+    preco: "R$ 48,00",
+    imagem: "imagens/WhatsApp Image 2026-02-26 at 07.44.20.jpeg"
+   },
+   {
+    id: 7,
+    nome: "Moletom Conexão Jovem",
+    preco: "R$ 80,00",
+    imagem: "imagens/modelomoletom.png"
+   },
+   {
+    id: 8,
+    nome: "Moletom Conexão Jovem",
+    preco: "R$ 80,00",
+    imagem: "imagens/modelomoletompreto.png"
+   },
+   {
+    id: 9,
+    nome: "Almofada Conexão Jovem",
+    preco: "R$ 30,00",
+    imagem: "imagens/almofada.png"
+   }
+];
+
+
+const params = new URLSearchParams(window.location.search);
+const busca = params.get("busca");
+
+const container = document.getElementById("lista-produtos");
+const termo = document.getElementById("termo-busca");
+const quantidade = document.getElementById("quantidade");
+
+termo.innerText = "Você buscou por: " + busca;
+
+let encontrados = produtos.filter(produto =>
+  produto.nome.toLowerCase().includes(busca.toLowerCase())
+);
+
+if(encontrados.length > 0){
+
+  quantidade.innerText = encontrados.length + " produto(s) encontrado(s)";
+
+  encontrados.forEach(produto => {
+
+    container.innerHTML += `
+      <div class="item-produto" onclick="abrirProduto(${produto.id})">
+        <img src="${produto.imagem}">
+        <div class="item-info">
+          <h3>${produto.nome}</h3>
+          <p>${produto.preco}</p>
+        </div>
+      </div>
+    `;
+  });
+
+}else{
+
+  quantidade.innerText = "0 produtos encontrados";
+  container.innerHTML = `<div class="nao-encontrado">Nenhum produto encontrado 😢</div>`;
+
+}
+
+function abrirProduto(id){  
+  window.location.href = "produto" + id + ".html";
+}
+
+</script>
+ <footer class="footer-premium">
+
+  <!-- SOBRE A LOJA -->
+  <div class="footer-top">
+    <div class="container">
+
+      <div class="footer-col sobre">
+        <h3>Sobre Nós</h3>
+        <p>
+          Somos uma marca cristã jovem, criada para expressar fé através da moda.
+          Estilo, propósito e identidade em cada peça.
+        </p>
+      </div>
+
+      <div class="footer-col links">
+        <h3>Institucional</h3>
+        <ul>
+          <li><a href="#">Sobre a Loja</a></li>
+          <li><a href="#">Política de Troca</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Contato</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col atendimento">
+        <h3>Atendimento</h3>
+        <ul>
+          <li>📞 (91) 98524-0058</li>
+          <li>✉ lojaumadevic@gmail.com</li>
+          <li>🕒 Seg a Sex - 9h às 18h</li>
+        </ul>
+      </div>
+
+      <div class="footer-col newsletter">
+        <h3>Receba Novidades</h3>
+        <form id="newsletterForm">
+          <input type="email" placeholder="Seu melhor e-mail" required>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- REDES + PAGAMENTO -->
+  <div class="footer-middle">
+    <div class="container middle-flex">
+
+       <div class="redes">
+        <span>Siga-nos</span>
+        <div class="selos">
+          <a href="https://www.instagram.com/_umadevic/"><i class="fab fa-instagram"></i><img src="imagens/transferir.png"></a>
+          <a href="#"><i class="fab fa-whatsapp"></i><img src="imagens/tiw.png"></a>
+          <a href="https://www.facebook.com/Umadevic/?locale=pt_BR"><i class="fab fa-youtube"></i><img src="imagens/face.png"></a>
+        </div>
+      </div>
+
+      <div class="pagamentos">
+        <span>Formas de Pagamento</span>
+        <div class="selos">
+          <img src="https://cdn.awsli.com.br/28/28812/arquivos/mp_cmyk_handshake_color_horizontal.png" alt="Mercado Pago">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COPYRIGHT -->
+  <div class="footer-bottom">
+    <p>© 2026 Loja Umadevic - Todos os direitos reservados</p>
+    <p>Feito por LizardTech</p>
+  </div>
+
+</footer>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+const swiper = new Swiper(".mySwiper", {
+  loop: true,
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
+</script>
+
+
+  <script src="app.js"></script>
+  <script>
+document.getElementById("newsletterForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  alert("Obrigado por se cadastrar!");
+  this.reset();
+});
+</script>
+</body>
+</html>
